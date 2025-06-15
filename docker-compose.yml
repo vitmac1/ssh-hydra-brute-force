@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  ubuntu-alvo:
+    build: .
+    container_name: ubuntu-alvo
+    environment:
+      - TZ=America/Sao_Paulo
+    ports:
+      - "22:22"
+    networks:
+      rede-ssh:
+        ipv4_address: 172.28.1.10
+
+  kali-atacante:
+    image: kalilinux/kali-rolling
+    container_name: kali-atacante
+    tty: true
+    stdin_open: true
+    privileged: true
+    command: /bin/bash
+    networks:
+      rede-ssh:
+        ipv4_address: 172.28.1.20
+
+networks:
+  rede-ssh:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.1.0/24
